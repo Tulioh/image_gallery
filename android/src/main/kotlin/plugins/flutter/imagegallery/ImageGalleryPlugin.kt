@@ -62,20 +62,12 @@ class ImageGalleryPlugin constructor(private val registrar: Registrar) : MethodC
         val cursor = registrar.activeContext().contentResolver.query(uri, projection, null, null, "$orderBy DESC")
 
         val columnIndexData = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
-//        val columnIndexFolderName = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
         var absolutePathOfImage: String?
-//        var folderName: String?
         val images = mutableListOf<String>()
 
         while (cursor.moveToNext()) {
             absolutePathOfImage = cursor.getString(columnIndexData)
             images.add(absolutePathOfImage)
-            /*
-            folderName = cursor.getString(columnIndexFolderName)
-            if (images[folderName] == null) {
-                images[folderName] = mutableListOf<String>()
-            }
-            images.get(folderName)?.add(absolutePathOfImage)*/
         }
 
         cursor.close()

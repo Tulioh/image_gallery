@@ -12,21 +12,5 @@ class ImageGallery {
       images.add(image);
     });
     return images;
-    /*final galleryImages = <GalleryImage>[];
-    images.forEach((folderName, imagesPath) {
-      imagesPath = List<String>.from(imagesPath);
-      final galleryImage = GalleryImage(folderName, imagesPath);
-      galleryImages.add(galleryImage);
-    });
-    return galleryImages;*/
   }
-}
-
-class GalleryImage {
-
-  final String folderName;
-  final List<String> imagesPath;
-
-  GalleryImage(this.folderName, this.imagesPath);
-
 }
