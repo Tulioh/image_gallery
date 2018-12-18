@@ -1,10 +1,7 @@
 import 'dart:io';
-
-import 'package:flutter/material.dart';
 import 'dart:async';
-
+import 'package:flutter/material.dart';
 import 'package:image_gallery/image_gallery.dart';
-import 'package:simple_permissions/simple_permissions.dart';
 
 void main() => runApp(MyApp());
 
@@ -76,24 +73,8 @@ class MyAppState extends State<MyApp> {
     );
   }
 
-  void _requestPermissionAndFetchPhotos() async {
-    bool hasPermission = await SimplePermissions.checkPermission(Permission.ReadExternalStorage);
-    if (hasPermission) {
-      _fetchPhotos();
-    } else {
-      final response = await SimplePermissions.requestPermission(Permission.ReadExternalStorage);
-      if (response == PermissionStatus.authorized) {
-        _fetchPhotos();
-      }
-    }
-  }
-
   void _fetchPhotos() async {
     final images = await ImageGallery.imagesFromGallery;
-    /*final imagesPath = <String>[];
-    galleryImages.forEach((galleryImage) {
-      imagesPath.addAll(galleryImage.imagesPath);
-    });*/
     setState(() {
       this.imagesPath = images;
     });
