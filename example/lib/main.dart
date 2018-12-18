@@ -29,7 +29,7 @@ class MyAppState extends State<MyApp> {
         body: Column(
           children: <Widget>[
             RaisedButton(
-                onPressed: _requestPermissionAndFetchPhotos,
+                onPressed: _fetchPhotos,
                 child: new Text("Request permission")
             ),
             _buildGridView(),
@@ -52,14 +52,28 @@ class MyAppState extends State<MyApp> {
             padding: EdgeInsets.all(1),
             itemCount: this.imagesPath.length,
             itemBuilder: (context, index) {
-              final imagePath = this.imagesPath[index];
-              return Image.file(File(imagePath));
+              return _getImage(index);
             }
         ),
       );
     } else {
       return Container();
     }
+  }
+
+  Widget _getImage(int index) {
+    return FutureBuilder<Image>(
+      future: _openImageFromDisk(index),
+      builder: (BuildContext context, AsyncSnapshot<Image> snapshot) {
+        return snapshot.data ?? CircularProgressIndicator();
+      });
+  }
+
+  Future<Image> _openImageFromDisk(int index) async {
+    return Image.file(
+      File(this.imagesPath[index]),
+      fit: BoxFit.cover,
+    );
   }
 
   void _requestPermissionAndFetchPhotos() async {
@@ -75,13 +89,13 @@ class MyAppState extends State<MyApp> {
   }
 
   void _fetchPhotos() async {
-    final galleryImages = await ImageGallery.imagesFromGallery;
-    final imagesPath = <String>[];
+    final images = await ImageGallery.imagesFromGallery;
+    /*final imagesPath = <String>[];
     galleryImages.forEach((galleryImage) {
       imagesPath.addAll(galleryImage.imagesPath);
-    });
+    });*/
     setState(() {
-      this.imagesPath = imagesPath;
+      this.imagesPath = images;
     });
   }
 
